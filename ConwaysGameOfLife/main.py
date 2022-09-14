@@ -15,16 +15,18 @@ surface = pygame.display.set_mode(RES)
 clock = pygame.time.Clock()
 
 next_field = np.array([[0 for i in range(W)] for j in range(H)])
-# default config
-current_field_default = np.array([[randint(0, 1) for i in range(W)] for j in range(H)])
-# cross config
-current_field_cross = np.array([[0 for i in range(W)] for j in range(H)])
+
+# random config
+field_random = np.array([[randint(0, 1) for i in range(W)] for j in range(H)])
+# diagonal cross config
+field_cross_diagonal = np.array([[0 for i in range(W)] for j in range(H)])
 for i in range(H):
-    current_field_cross[i][i + (W - H) // 2] = 1
-    current_field_cross[H - i - 1][i + (W - H) // 2] = 1
+    field_cross_diagonal[i][i + (W - H) // 2] = 1
+    field_cross_diagonal[H - i - 1][i + (W - H) // 2] = 1
+# cross config
+field_cross = np.array([[1 if i == W // 2 or j == H // 2 else 0 for i in range(W)] for j in range(H)])
 
-
-selected_current_field = current_field_cross
+selected_current_field = field_cross
 
 
 @njit(fastmath=True)
