@@ -1,5 +1,6 @@
 import pygame as pg
 from collections import deque
+from random import choice, randrange
 
 
 class Ant:
@@ -21,13 +22,13 @@ class Ant:
             pg.draw.rect(self.app.screen, self.color, rect)
 
         self.increments.rotate(1) if value else self.increments.rotate(-1)
-        dx,dy = self.increments[0]
+        dx, dy = self.increments[0]
         self.x = (self.x + dx) % self.app.COLS
         self.y = (self.y + dy) % self.app.ROWS
 
 
 class App:
-    def __init__(self, WIDTH=1600, HEIGHT=900, CELL_SIZE=12):
+    def __init__(self, WIDTH=1600, HEIGHT=900, CELL_SIZE=15):
         pg.init()
         self.screen = pg.display.set_mode([WIDTH, HEIGHT])
         self.clock = pg.time.Clock()
@@ -36,11 +37,20 @@ class App:
         self.ROWS, self.COLS = HEIGHT // CELL_SIZE, WIDTH // CELL_SIZE
         self.grid = [[0 for col in range(self.COLS)] for row in range(self.ROWS)]
 
-        self.ant = Ant(app=self, pos=[self.COLS // 2, self.ROWS // 2], color=pg.Color('orange'))
+        # spawn single ant
+        # self.ant = Ant(app=self, pos=[self.COLS // 2, self.ROWS // 2], color=pg.Color('orange'))
+
+        # spawn multiple ants
+        self.ants = [Ant(self,[randrange(self.COLS), randrange(self.ROWS)], self.get_color()) for i in range(13)]
+
+    @staticmethod
+    def get_color():
+        channel = lambda: randrange(30, 220)
+        return channel(), channel(), channel()
 
     def run(self):
         while True:
-            self.ant.run()
+            [ant.run() for ant in self.ants]
 
             [exit() for i in pg.event.get() if i.type == pg.QUIT]
             pg.display.flip()
