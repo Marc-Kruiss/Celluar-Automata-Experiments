@@ -16,10 +16,11 @@ class Ant:
 
         SIZE = self.app.CELL_SIZE
         rect = self.x * SIZE, self.y * SIZE, SIZE - 1, SIZE - 1
+        center = self.x * SIZE, self.y * SIZE
         if value:
             pg.draw.rect(self.app.screen, pg.Color('white'), rect)
         else:
-            pg.draw.rect(self.app.screen, self.color, rect)
+            pg.draw.circle(self.app.screen, self.color, center,SIZE)
 
         self.increments.rotate(1) if value else self.increments.rotate(-1)
         dx, dy = self.increments[0]
@@ -28,7 +29,7 @@ class Ant:
 
 
 class App:
-    def __init__(self, WIDTH=1600, HEIGHT=900, CELL_SIZE=15):
+    def __init__(self, WIDTH=1600, HEIGHT=900, CELL_SIZE=5, AMOUNT=20):
         pg.init()
         self.screen = pg.display.set_mode([WIDTH, HEIGHT])
         self.clock = pg.time.Clock()
@@ -41,7 +42,7 @@ class App:
         # self.ant = Ant(app=self, pos=[self.COLS // 2, self.ROWS // 2], color=pg.Color('orange'))
 
         # spawn multiple ants
-        self.ants = [Ant(self,[randrange(self.COLS), randrange(self.ROWS)], self.get_color()) for i in range(13)]
+        self.ants = [Ant(self, [randrange(self.COLS), randrange(self.ROWS)], self.get_color()) for i in range(AMOUNT)]
 
     @staticmethod
     def get_color():
