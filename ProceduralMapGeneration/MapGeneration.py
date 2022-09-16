@@ -12,10 +12,6 @@ surface = pygame.display.set_mode(RES)
 clock = pygame.time.Clock()
 FPS = -1
 
-next_field = np.array([[randint(0, 1) for i in range(W)] for j in range(H)])
-
-ITERAITONS = 5
-
 
 def make_noise_grid(density):
     field = np.array([[0 for i in range(W)] for j in range(H)])
@@ -57,22 +53,28 @@ def apply_cellar_automaton(grid, iterationCount):
     return next_grid, res
 
 
-noise_grid, res = make_noise_grid(50)
-grid = next_field
-iterationCount = 0
-while True:
+if __name__ == '__main__':
+    grid, res = make_noise_grid(55)
+    ITERAITONS = 5
+    iterationCount = 0
+    while True:
 
-    surface.fill(pygame.Color('black'))
-    [exit() for i in pygame.event.get() if i.type == pygame.QUIT]
+        surface.fill(pygame.Color('black'))
+        [exit() for i in pygame.event.get() if i.type == pygame.QUIT]
 
-    [pygame.draw.rect(surface, pygame.Color('darkorange'),
-                      (x * TILE + 1, y * TILE + 1, TILE - 1, TILE - 1)) for x, y in res]
+        # Draw rects
+        # [pygame.draw.rect(surface, pygame.Color('darkorange'),
+        #                 (x * TILE + 1, y * TILE + 1, TILE)) for x, y in res]
 
-    if iterationCount <= ITERAITONS:
-        grid, res = apply_cellar_automaton(grid, 1)
+        # Draw circles
+        [pygame.draw.circle(surface, pygame.Color('darkorange'),
+                            (x * TILE + 1, y * TILE + 1), TILE) for x, y in res]
 
-    iterationCount += 1
+        if iterationCount <= ITERAITONS:
+            grid, res = apply_cellar_automaton(grid, 1)
 
-    print(clock.get_fps())
-    pygame.display.flip()
-    clock.tick(FPS)
+        iterationCount += 1
+
+        print(clock.get_fps())
+        pygame.display.flip()
+        clock.tick(FPS)
