@@ -54,8 +54,8 @@ def apply_cellar_automaton(grid, iterationCount):
 
 
 if __name__ == '__main__':
-    grid, res = make_noise_grid(55)
-    ITERAITONS = 5
+    grid, res = make_noise_grid(60)
+    ITERAITONS = 4
     iterationCount = 0
     while True:
 
